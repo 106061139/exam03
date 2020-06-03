@@ -50,9 +50,6 @@ mqttc.on_subscribe = on_subscribe
 mqttc.on_unsubscribe = on_unsubscribe
 # Connect and subscribe
 
-print("Connecting to " + host + "/" + topic)
-
-mqttc.connect(host, port=1883, keepalive=60)
 
 mqttc.subscribe(topic, 0)
 
@@ -99,12 +96,11 @@ while True:
     print(line.decode())
     # Publish messages from Python
     ret = mqttc.publish(topic, "Message from Python!\n", qos=0)
+    if (ret[0] != 0):
 
-      if (ret[0] != 0):
+        print("Publish failed")
 
-            print("Publish failed")
-
-      mqttc.loop()
+    mqttc.loop()
     time.sleep(1)
-    mqttc.loop_forever()
+mqttc.loop_forever()
 s.close()
